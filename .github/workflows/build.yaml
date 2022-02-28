@@ -52,6 +52,6 @@ jobs:
       - name: Build Application Image
         run: |
           docker build . -t ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }}
-          docker tag ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }} ${{ github.event.inputs.applicationRepository }}:latest
+          docker tag ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }} ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:latest
           docker push ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }}
           docker push ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:latest
