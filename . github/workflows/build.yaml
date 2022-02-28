@@ -1,0 +1,57 @@
+name: Build Application Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      xskRepository:
+        description: XSK Repository
+        required: true
+        type: choice
+        options: 
+        - 'dirigiblelabs/xsk-kyma'
+        - 'dirigiblelabs/xsk-cf'
+        - 'dirigiblelabs/xsk'
+      xskVersion:
+        description: XSK Version
+        required: true
+        default: 'latest'
+      applicationRepository:
+        description: Application Repository
+        required: true
+        default: 'thuf/test-xsjs-2'
+      applicationReleaseVersion:
+        description: Application Release Version
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Input Parameters
+        run: |
+          echo "Release Type: ${{ github.event.inputs.releaseType }}"
+          echo "Application Repository: ${{ github.event.inputs.applicationRepository }}"
+          echo "Application Release Version: ${{ github.event.inputs.applicationReleaseVersion }}"
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build Dockerfile
+        run: |
+          DOCKERFILE_CONTENT=$(cat << EOF
+          FROM ${{ github.event.inputs.xskRepository }}:${{ github.event.inputs.xskVersion }}
+          RUN mkdir -p /usr/local/tomcat/target/dirigible/repository/root/registry/public/
+          COPY . /usr/local/tomcat/target/dirigible/repository/root/registry/public/
+          RUN rm -rf /usr/local/tomcat/target/dirigible/repository/root/registry/public/Dockerfile
+          RUN rm -rf /usr/local/tomcat/target/dirigible/repository/root/registry/public/.github/
+          EOF
+          )
+          echo "$DOCKERFILE_CONTENT" >> Dockerfile
+          echo "$DOCKERFILE_CONTENT"
+      - name: Docker Login
+        run: docker login ${{secrets.DOCKER_REGISTRY}} -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build Application Image
+        run: |
+          docker build . -t ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }}
+          docker tag ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }} ${{ github.event.inputs.applicationRepository }}:latest
+          docker push ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }}
+          docker push ${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:latest
