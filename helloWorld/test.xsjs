@@ -1,3 +1,3 @@
 $.response.setBody(JSON.stringify({
-    "message": "Hello World!"
+    "message": "Hello World from https://ghcr.io!"
 }));
