@@ -57,4 +57,9 @@ jobs:
           --set hana.password='${{ secrets.HANA_PASSWORD }}' \
           --set persistentVolumeClaim.enabled=false \
           --set deployment.strategyType=RollingUpdate \
+          --set application.privateDockerRegistry=true \
+          --set application.dockerServer= ${{secrets.DOCKER_REGISTRY}} \
+          --set application.dockerUsername=${{secrets.DOCKER_USERNAME}} \
+          --set application.dockerPassword=${{secrets.DOCKER_PASSWORD}} \
+          --set application.dockerEmail=${{secrets.DOCKER_EMAIL}} \
           --set application.image=${{secrets.DOCKER_REGISTRY}}/${{ github.event.inputs.applicationRepository }}:${{ github.event.inputs.applicationReleaseVersion }}
