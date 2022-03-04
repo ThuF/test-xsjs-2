@@ -58,7 +58,7 @@ jobs:
           --set persistentVolumeClaim.enabled=false \
           --set deployment.strategyType=RollingUpdate \
           --set application.privateDockerRegistry=true \
-          --set application.dockerServer= ${{secrets.DOCKER_REGISTRY}} \
+          --set application.dockerServer=${{secrets.DOCKER_REGISTRY}} \
           --set application.dockerUsername=${{secrets.DOCKER_USERNAME}} \
           --set application.dockerPassword=${{secrets.DOCKER_PASSWORD}} \
           --set application.dockerEmail=${{secrets.DOCKER_EMAIL}} \
