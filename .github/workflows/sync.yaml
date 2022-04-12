@@ -1,0 +1,22 @@
+name: Get latest release version
+on:
+  schedule:
+    - cron:  '0/30 * * ? * * *'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.GH_TOKEN}}
+      - name: sync
+        run: |
+          mkdir sync
+          cd sync/
+          git clone https://github.com/sap/xsk
+          git checkout gh-pages
+          cp . ../
+          cd ..
+          rm -rf sync/
+          ls
+          
