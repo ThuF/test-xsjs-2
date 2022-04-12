@@ -21,11 +21,18 @@ jobs:
           cp -R * ../../
           cd ../..
           rm -rf sync/
-      - name: Commit and Push Changes
+      - name: Git Config
         run: |
           git config user.name ${{secrets.GH_USER_NAME}}
           git config user.email ${{secrets.GH_USER_EMAIL}}
+      - name: Calculate Changes
+        run: |
           git add .
+          HAVE_DIFF=$(git diff HEAD) >> $GITHUB_ENV
+      - name: Commit and Push Changes
+        run: |
+          echo "Have Diff"
+          echo ${{ env.HAVE_DIFF }}
           git commit -m "Sync Content"
           git push origin gh-pages
           
