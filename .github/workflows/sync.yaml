@@ -17,7 +17,7 @@ jobs:
           cd sync/
           git clone https://github.com/sap/xsk
           cd xsk/
-          git checkout -b gh-pages
+          git checkout gh-pages
           cp -R * ../../
           cd ../..
           rm -rf sync/
