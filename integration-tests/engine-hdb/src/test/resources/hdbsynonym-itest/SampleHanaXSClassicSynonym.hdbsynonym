@@ -1,9 +1,0 @@
-{
-  "hdbsynonym-itest::SampleHanaXSClassicSynonym": {
-    "schema": "TEST_SCHEMA",
-    "target": {
-      "schema": "TEST_SCHEMA",
-      "object": "hdbsynonym-itest::SampleHanaTable"
-    }
-  }
-}
