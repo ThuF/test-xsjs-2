@@ -1,0 +1,32 @@
+name: Synchronize Content
+on:
+  workflow_dispatch
+#   schedule:
+#     - cron:  '0/5 * * ? *'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.GH_TOKEN}}
+      - name: Switch Branch
+        run: git checkout gh-pages
+      - name: Sync Content
+        run: |
+          mkdir sync
+          cd sync/
+          git clone https://github.com/sap/xsk
+          cd xsk/
+          git checkout -b gh-pages
+          cp -R * ../../
+          cd ../..
+          rm -rf sync/
+      - name: Commit and Push Changes
+        run: |
+          git config user.name ${{secrets.GH_USER_NAME}}
+          git config user.email ${{secrets.GH_USER_EMAIL}}
+          git add .
+          git commit -m "Sync Content"
+          git push origin gh-pages
+          
