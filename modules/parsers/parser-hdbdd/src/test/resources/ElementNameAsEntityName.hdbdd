@@ -1,9 +1,0 @@
-namespace sap.db;
-
-@Schema: 'ADMIN'
-
-context ElementNameAsEntityName {
-    entity  Order {
-        key Order               : String(32);
-    };
-};
