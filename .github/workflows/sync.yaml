@@ -15,9 +15,11 @@ jobs:
           mkdir sync
           cd sync/
           git clone https://github.com/sap/xsk
-          git checkout gh-pages
-          cp . ../
-          cd ..
+          cd xsk/
+          git checkout -b gh-pages
+          cp -R * ../../
+          cd ../..
           rm -rf sync/
-          ls
+          git status
+          git diff
           
