@@ -30,9 +30,8 @@ jobs:
           git add .
           HAVE_DIFF=$(git diff HEAD) >> $GITHUB_ENV
       - name: Commit and Push Changes
+        if: ${{ env.HAVE_DIFF != "" }}
         run: |
-          echo "Have Diff"
-          echo ${{ env.HAVE_DIFF }}
           git commit -m "Sync Content"
           git push origin gh-pages
           
