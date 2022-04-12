@@ -10,8 +10,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{secrets.GH_TOKEN}}
-      - name: Switch Branch
-        run: git checkout gh-pages
+          ref: gh-pages
       - name: Sync Content
         run: |
           mkdir sync
