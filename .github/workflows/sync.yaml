@@ -35,6 +35,8 @@ jobs:
           else
             echo ::set-output name=have-changes::true
           fi
+          echo "Have Changes"
+          echo ${{ steps.calculate-changes.outputs.have-changes}}
       - name: Commit and Push Changes
         if: ${{ steps.calculate-changes.outputs.have-changes }}
         run: |
