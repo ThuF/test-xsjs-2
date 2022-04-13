@@ -11,6 +11,28 @@ jobs:
         with:
           token: ${{secrets.GH_TOKEN}}
           ref: gh-pages
+      - name: Clean Up
+        run: |
+          rm -rf artifacts/
+          rm -rf docs-site/
+          rm -rf index.html
+          rm -rf css/
+          rm -rf CNAME
+          rm -rf setup/
+          rm -rf 404.html
+          rm -rf lifecycle/
+          rm -rf charts/
+          rm -rf search/
+          rm -rf img/
+          rm -rf .gitignore
+          rm -rf api/
+          rm -rf sitemap.xml
+          rm -rf sitemap.xml.gz
+          rm -rf community/
+          rm -rf assets/
+          rm -rf migration/
+          rm -rf index.yaml
+          rm -rf cheatsheet/
       - name: Sync Content
         run: |
           mkdir sync
@@ -20,7 +42,7 @@ jobs:
           git checkout gh-pages
           cp -R * ../../
           cd ../..
-          rm -rf sync/
+          rm -rf sync/        
       - name: Calculate Changes
         run: |
           git add .
