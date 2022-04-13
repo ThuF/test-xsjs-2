@@ -21,27 +21,15 @@ jobs:
           cp -R * ../../
           cd ../..
           rm -rf sync/
-      - name: Git Config
-        run: |
-          git config user.name ${{secrets.GH_USER_NAME}}
-          git config user.email ${{secrets.GH_USER_EMAIL}}
       - name: Calculate Changes
         run: |
           git add .
           HAVE_CHANGES=$(git diff HEAD) >> $GITHUB_ENV
-      - name: Set Calculate Changes
-        id: changes
-        run: |
-          if [ "$HAVE_CHANGES" == "" ]; then
-            echo ::set-output name=havechanges::false
-          else
-            echo ::set-output name=havechanges::true
-          fi
-          echo "Have Changes"
-          echo ${{ steps.changes.outputs.havechanges}}
       - name: Commit and Push Changes
-        if: ${{ steps.changes.outputs.havechanges }}
+        if: ${{ env.HAVE_CHANGES != '' }}
         run: |
+          git config user.name ${{secrets.GH_USER_NAME}}
+          git config user.email ${{secrets.GH_USER_EMAIL}}
           git commit -m "Sync Content"
           git push origin gh-pages
           
