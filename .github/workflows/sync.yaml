@@ -43,19 +43,24 @@ jobs:
           cp -R * ../../
           cd ../..
           rm -rf sync/        
-      - name: Calculate Changes
-        run: |
-          git add .
-          HAVE_CHANGES=$(git diff HEAD) >> $GITHUB_ENV
-          echo env.HAVE_CHANGES =
-          echo ${{ env.HAVE_CHANGES }}
-          echo ${{ env.HAVE_CHANGES != '' }}
-          git diff HEAD
-      - name: Commit and Push Changes
-        if: ${{ env.HAVE_CHANGES != '' }}
-        run: |
-          git config user.name ${{secrets.GH_USER_NAME}}
-          git config user.email ${{secrets.GH_USER_EMAIL}}
-          git commit -m "Sync Content"
-          git push origin gh-pages
+#       - name: Calculate Changes
+#         run: |
+#           git add .
+#           HAVE_CHANGES=$(git diff HEAD) >> $GITHUB_ENV
+#           echo env.HAVE_CHANGES =
+#           echo ${{ env.HAVE_CHANGES }}
+#           echo ${{ env.HAVE_CHANGES != '' }}
+#           git diff HEAD
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Sync Content
+          commit_user_name: ${{secrets.GH_USER_NAME}}
+          commit_user_email: ${{secrets.GH_USER_EMAIL}}
+#       - name: Commit and Push Changes
+#         if: ${{ env.HAVE_CHANGES != '' }}
+#         run: |
+#           git config user.name ${{secrets.GH_USER_NAME}}
+#           git config user.email ${{secrets.GH_USER_EMAIL}}
+#           git commit -m "Sync Content"
+#           git push origin gh-pages
           
