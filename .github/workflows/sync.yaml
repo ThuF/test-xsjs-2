@@ -48,7 +48,9 @@ jobs:
           git add .
           HAVE_CHANGES=$(git diff HEAD) >> $GITHUB_ENV
           echo env.HAVE_CHANGES =
-          echo $ {{ env.HAVE_CHANGES }}
+          echo ${{ env.HAVE_CHANGES }}
+          echo ${{ env.HAVE_CHANGES != '' }}
+          git diff HEAD
       - name: Commit and Push Changes
         if: ${{ env.HAVE_CHANGES != '' }}
         run: |
